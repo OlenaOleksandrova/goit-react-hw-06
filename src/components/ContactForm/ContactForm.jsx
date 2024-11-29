@@ -17,16 +17,23 @@ const ContactForm = () => {
       .required("Обов'язково"),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
-    dispatch(addContact({ id: nanoid(), ...values }));
+  const onSubmit = (values, { resetForm }) => {
+    const newContact = {
+      id: nanoid(),
+      name: values.name,
+      number: values.number,
+      completed: false,
+    };
+    dispatch(addContact(newContact));
     resetForm();
   };
 
   return (
     <Formik
       initialValues={{ name: "", number: "" }}
-      orderSchema ={orderSchema }
-      onSubmit={handleSubmit}
+      // orderSchema ={orderSchema }
+       validationSchema={orderSchema}
+      onSubmit={onSubmit}
     >
       <Form className={s.form}>
         <label className={s.label}>

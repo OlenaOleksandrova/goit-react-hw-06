@@ -1,26 +1,41 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Використовуємо localStorage як сховище
 import contactsReducer from "./contactsSlice";
 import filtersReducer from "./filtersSlice";
 
-// Налаштування persist для контактів
-const contactsPersistConfig = {
-  key: "contacts",
-  storage,
-};
-
-// Persisted reducer для контактів
-const persistedContactsReducer = persistReducer(contactsPersistConfig, contactsReducer);
-
 // Налаштування store
-const store = configureStore({
+// з лекції частина 1
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
+
+const persistConfig = {
+  key: 'contacts',
+  version: 1,
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, contactsReducer)
+
+export const store = configureStore({
   reducer: {
-    contacts: persistedContactsReducer,
+    contacts: persistedReducer,
     filters: filtersReducer,
   },
-});
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+}); 
 
-// Persistor для використання з PersistGate
-export const persistor = persistStore(store);
 export default store;
+export let persistor = persistStore(store);
