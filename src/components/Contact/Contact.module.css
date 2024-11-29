@@ -19,17 +19,20 @@
     border: 1px solid #141414;
     padding: 10px 14px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 1.2em;
     display: block;
     background-color: rgb(238, 233, 233);
+    font-weight: 550;
 }
 
 .contactInfo {
     display: flex;
     flex-direction: column;
-    /* gap: 10px; */
+    gap: 10px;
     max-width: 100%;
     overflow: hidden;
+    justify-content: center;
+    text-align: left;
 }
 
 .contactName {
